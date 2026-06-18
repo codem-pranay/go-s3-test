@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      BUCKET: lambda-function-codem
+      BUCKET: github-actions-go-s3-deploy-versioning 
       FILE: app.exe
 
     steps:
