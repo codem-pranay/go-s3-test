@@ -80,6 +80,7 @@ jobs:
       - name: Verify upload
         run: |
 
-          aws s3 head-object \
+          aws s3api head-object \
             --bucket $BUCKET \
             --key $FILE
+          echo "Upload verified"
