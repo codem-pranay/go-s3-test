@@ -61,6 +61,9 @@ jobs:
             $FILE \
             s3://$BUCKET/$FILE
 
+      - name: Force failure for rollback test
+        run: exit 1
+
       - name: Verify upload
         run: |
 
