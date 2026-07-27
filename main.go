@@ -2,11 +2,23 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 	"os"
-	"runtime"
 )
 
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Hello from Go running on AWS ECS!")
+}
+
 func main() {
-	fmt.Printf("Hello, Go %s on %s/%s\n", runtime.Version(), runtime.GOOS, runtime.GOARCH)
-	fmt.Printf("Executable: %s\n", os.Args[0])
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	http.HandleFunc("/", handler)
+
+	log.Printf("Server starting on port %s", port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
