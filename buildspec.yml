@@ -1,0 +1,30 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION: ap-south-1
+    GOOS: windows
+    GOARCH: amd64
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.22
+    commands:
+      - echo "Installing dependencies..."
+      - go version
+
+  pre_build:
+    commands:
+      - echo "Running tests with AWS_REGION=$AWS_REGION"
+      - go test -v ./...
+
+  build:
+    commands:
+      - echo "Building application..."
+      - go build -o app.exe
+
+artifacts:
+  files:
+    - app.exe
+    - '**/*'
