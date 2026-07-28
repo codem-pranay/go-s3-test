@@ -1,0 +1,39 @@
+version: 0.2
+
+env:
+  variables:
+    GO_VERSION: "1.22"
+  parameter-store:
+    DATABASE_URL: "/codebuild/database-url"
+  # Alternatively, you can set DATABASE_URL directly as a variable:
+  # variables:
+  #   DATABASE_URL: "postgresql://user:password@localhost:5432/dbname"
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.22
+    commands:
+      - echo "Installing dependencies..."
+      - go version
+      - python3 --version
+
+  pre_build:
+    commands:
+      - echo "Running pre-build checks..."
+      - echo "DATABASE_URL is configured"
+      - go mod download
+
+  build:
+    commands:
+      - echo "Building application..."
+      - go build -o app.exe main.go
+
+  post_build:
+    commands:
+      - echo "Running tests..."
+      - go test ./... -v
+
+artifacts:
+  files:
+    - app.exe

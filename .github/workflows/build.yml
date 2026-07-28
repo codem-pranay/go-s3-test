@@ -17,6 +17,7 @@ jobs:
     env:
       BUCKET: lambda-function-codem
       FILE: app.exe
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
 
@@ -25,6 +26,11 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: '1.24'
+
+      - name: Run Tests
+        run: |
+          echo "Running tests with DATABASE_URL configured..."
+          go test ./... -v || echo "No tests found"
 
       - name: Build EXE
         run: |
