@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.24
+    commands:
+      - echo "Installing dependencies..."
+      - go version
+      - go mod download
+
+  pre_build:
+    commands:
+      - echo "Running tests..."
+      - go test ./...
+
+  build:
+    commands:
+      - echo "Building application..."
+      - mkdir -p build
+      - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o build/app .
+
+artifacts:
+  files:
+    - build/**/*
