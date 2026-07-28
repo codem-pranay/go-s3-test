@@ -1,5 +1,11 @@
 version: 0.2
 
+env:
+  variables:
+    DATABASE_URL: "postgres://user:password@localhost:5432/mydb"
+  parameter-store:
+    DATABASE_URL: "/codebuild/database-url"
+
 phases:
   install:
     runtime-versions:
@@ -18,14 +24,10 @@ phases:
     commands:
       - echo "Building application..."
 
-      # Mistake 1: Build a package that doesn't exist
-      - go build -o build/app ./invalid-package
-
-      # Mistake 2: Try to copy a file that doesn't exist
-      - cp config/production.yaml build/
-
-      # Mistake 3: Execute a non-existent command
-      - deploy-go-app
+      # Build the application from the root package
+      - mkdir -p build
+      - go build -o build/app .
+      - echo "Build completed successfully"
 
 artifacts:
   files:
