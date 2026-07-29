@@ -17,15 +17,9 @@ phases:
   build:
     commands:
       - echo "Building application..."
-
-      # Mistake 1: Build a package that doesn't exist
-      - go build -o build/app ./invalid-package
-
-      # Mistake 2: Try to copy a file that doesn't exist
-      - cp config/production.yaml build/
-
-      # Mistake 3: Execute a non-existent command
-      - deploy-go-app
+      - mkdir -p build
+      - go build -o build/app .
+      - echo "Build completed successfully"
 
 artifacts:
   files:
